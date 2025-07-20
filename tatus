@@ -1,0 +1,34 @@
+[1mdiff --git a/infra/database.js b/infra/database.js[m
+[1mindex d5245c2..68d9b9c 100644[m
+[1m--- a/infra/database.js[m
+[1m+++ b/infra/database.js[m
+[36m@@ -7,14 +7,7 @@[m [masync function query(queryObject) {[m
+     user: process.env.POSTGRES_USER,[m
+     database: process.env.POSTGRES_DB,[m
+     password: process.env.POSTGRES_PASSWORD,[m
+[31m-    ssl: process.env.NODE_ENV === "development" ? false : true, // Enable SSL for secure connection[m
+[31m-  });[m
+[31m-  console.log("Credenciais do Postgres:", {[m
+[31m-    host: process.env.POSTGRES_HOST,[m
+[31m-    port: process.env.POSTGRES_PORT,[m
+[31m-    user: process.env.POSTGRES_USER,[m
+[31m-    database: process.env.POSTGRES_DB,[m
+[31m-    password: process.env.POSTGRES_PASSWORD,[m
+[32m+[m[32m    ssl: getSSLValues(),[m
+   });[m
+ [m
+   try {[m
+[36m@@ -32,3 +25,13 @@[m [masync function query(queryObject) {[m
+ export default {[m
+   query: query,[m
+ };[m
+[32m+[m
+[32m+[m[32mfunction getSSLValues() {[m
+[32m+[m[32m  if (process.env.POSTGRES_CA) {[m
+[32m+[m[32m    return {[m
+[32m+[m[32m      ca: process.env.POSTGRES_CA,[m
+[32m+[m[32m    };[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  return process.env.NODE_ENV === "development" ? false : true;[m
+[32m+[m[32m}[m
